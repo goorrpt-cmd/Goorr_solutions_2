@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Goorr_solutions_1</title>
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <!-- Optional: Tailwind (remove if not needed) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- 🔵 Top Navigation -->
+    <nav class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+
+                <!-- Brand -->
+                <div class="flex items-center gap-2">
+                    <span class="text-xl font-bold text-blue-600">
+                        Goorr_solutions_1
+                    </span>
+                    <span class="text-sm text-gray-500 hidden sm:block">
+                        Candidate Management System
+                    </span>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="flex items-center gap-6 text-sm font-medium">
+
+                    <a href="/" class="text-gray-700 hover:text-blue-600 transition">
+                        Home
+                    </a>
+
+                    <a href="/hello/" 
+                       hx-get="/hello/" 
+                       hx-target="#content" 
+                       hx-swap="innerHTML"
+                       class="text-gray-700 hover:text-green-600 transition">
+                        HTMX Test
+                    </a>
+
+                    <a href="/admin/" class="text-gray-700 hover:text-red-600 transition">
+                        Admin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 🔵 Main Content -->
+    <main class="max-w-7xl mx-auto p-6">
+        <div id="content">
+            {% block content %}
+            <h1 class="text-2xl font-semibold">Welcome to Goorr_solutions_1</h1>
+            <button hx-get="/hello/" hx-target="#content" hx-swap="outerHTML"
+                    class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                Click to test HTMX
+            </button>
+            {% endblock %}
+        </div>
+    </main>
+
+</body>
+</html>

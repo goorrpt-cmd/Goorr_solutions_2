@@ -1,0 +1,22 @@
+<table class="w-full text-sm">
+    <thead>
+        <tr class="text-left border-b">
+            <th class="py-2">Candidate</th>
+            <th>When</th>
+            <th>Location</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in interviews %}
+        <tr class="border-b hover:bg-gray-50">
+            <td class="py-2">{{ i.candidate }}</td>
+            <td>{{ i.scheduled_at|date:"Y-m-d H:i" }}</td>
+            <td>{{ i.location }}</td>
+            <td>{{ i.result }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="py-4 text-gray-500">No upcoming interviews.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>

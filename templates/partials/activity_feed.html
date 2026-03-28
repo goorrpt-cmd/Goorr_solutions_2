@@ -1,0 +1,15 @@
+<ul class="space-y-3 text-sm">
+    {% for log in logs %}
+    <li class="border-b pb-2">
+        <div class="font-medium">{{ log.action }}</div>
+        <div class="text-gray-500">
+            {{ log.model_name }} — ID: {{ log.object_id }}
+        </div>
+        <div class="text-gray-400 text-xs">
+            {{ log.created_at|date:"Y-m-d H:i" }}
+        </div>
+    </li>
+    {% empty %}
+    <li class="text-gray-500">No recent activity.</li>
+    {% endfor %}
+</ul>

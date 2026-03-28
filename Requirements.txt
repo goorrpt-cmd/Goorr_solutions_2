@@ -1,0 +1,9 @@
+Django==6.0.3
+djangorestframework==3.16.1
+django-environ==0.13.0
+django-htmx==1.27.0
+psycopg==3.3.3
+psycopg-binary==3.3.3
+gunicorn==25.1.0
+Pillow==10.2.0
+

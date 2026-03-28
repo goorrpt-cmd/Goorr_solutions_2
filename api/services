@@ -1,0 +1,33 @@
+from django.db.models import Count
+from django.utils.timezone import now
+from datetime import timedelta
+from .models import Candidate
+
+def get_kpis():
+    return {
+        "total": Candidate.objects.count(),
+        "interview_scheduled": Candidate.objects.filter(status="INTERVIEW_SCHEDULED").count(),
+        "interview_passed": Candidate.objects.filter(status="INTERVIEW_PASSED").count(),
+        "visa_approved": Candidate.objects.filter(status="VISA_APPROVED").count(),
+    }
+
+def get_status_distribution():
+    return list(
+        Candidate.objects.values("status").annotate(count=Count("id"))
+    )
+
+def get_conversion_rates():
+    scheduled = Candidate.objects.filter(status="INTERVIEW_SCHEDULED").count()
+    passed = Candidate.objects.filter(status="INTERVIEW_PASSED").count()
+
+    visa_submitted = Candidate.objects.filter(status="VISA_SUBMITTED").count()
+    visa_approved = Candidate.objects.filter(status="VISA_APPROVED").count()
+
+    return {
+        "interview_rate": round((passed / scheduled * 100), 1) if scheduled else 0,
+        "visa_rate": round((visa_approved / visa_submitted * 100), 1) if visa_submitted else 0,
+    }
+
+def get_stuck_candidates():
+    threshold = now() - timedelta(days=30)
+    return Candidate.objects.filter(updated_at__lt=threshold)[:10]
