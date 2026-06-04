@@ -1,0 +1,21 @@
+def agency_manager_dashboard(request):
+    user = request.user
+
+    agencies = user.managed_agencies.all()
+
+    candidates = Candidate.objects.filter(
+        assignments__employer__in=agencies.values("id")
+    ).distinct()
+
+    context = {
+        "agencies": agencies,
+        "candidates": candidates[:10],
+        "work_permits": WorkPermit.objects.filter(
+            employer__in=agencies.values("id")
+        )[:10],
+        "visa_apps": VisaApplication.objects.filter(
+            candidate__in=candidates
+        )[:10],
+    }
+
+    return render(request, "dashboards/agency_manager_dashboard.html", context)

@@ -1,0 +1,98 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<style>
+    body.login {
+        background: #0d1b2a !important;
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .goorr-login-box {
+        background: #1b263b;
+        padding: 40px;
+        border-radius: 12px;
+        width: 380px;
+        color: #e0e1dd;
+        box-shadow: 0 0 25px rgba(0,0,0,0.4);
+    }
+
+    .goorr-title {
+        font-size: 26px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 25px;
+        color: #e0e1dd;
+    }
+
+    .goorr-btn {
+        background: #415a77;
+        border: none;
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        color: #fff;
+        border-radius: 6px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    .goorr-btn:hover {
+        background: #778da9;
+    }
+
+    .form-group label {
+        color: #e0e1dd;
+        font-weight: 500;
+    }
+
+    .form-control, input[type="text"], input[type="password"] {
+        background: #0d1b2a !important;
+        border: 1px solid #415a77 !important;
+        color: #fff !important;
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+    }
+
+    .errornote, .errorlist {
+        color: #ff6b6b;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="goorr-login-box">
+
+    <div class="goorr-title">Goorr Systems Login</div>
+
+    {% if form.errors %}
+        <p class="text-danger text-center">Invalid username or password</p>
+    {% endif %}
+
+    <form method="post" action="{% url 'admin:login' %}">
+        {% csrf_token %}
+
+        <div class="form-group mb-3">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+        </div>
+
+        <div class="form-group mb-3">
+            {{ form.password.label_tag }}
+            {{ form.password }}
+        </div>
+
+        <input type="hidden" name="next" value="{{ next }}">
+
+        <button type="submit" class="goorr-btn">Login</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,268 @@
+
+
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<style>
+    .content-wrapper {
+        padding: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- KPI CARDS -->
+
+    <div class="row">
+
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{ kpi_candidates }}</h3>
+                    <p>Total Candidates</p>
+                </div>
+                <div class="icon"><i class="fas fa-users"></i></div>
+            </div>
+        </div>
+    
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>{{ kpi_interviews }}</h3>
+                    <p>Interviews Today</p>
+                </div>
+                <div class="icon"><i class="fas fa-calendar-check"></i></div>
+            </div>
+        </div>
+    
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3>{{ kpi_erpp }}</h3>
+                    <p>ERPP Enrolled</p>
+                </div>
+                <div class="icon"><i class="fas fa-user-graduate"></i></div>
+            </div>
+        </div>
+    
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-primary">
+                <div class="inner">
+                    <h3>{{ kpi_contracts }}</h3>
+                    <p>Active Contracts</p>
+                </div>
+                <div class="icon"><i class="fas fa-file-contract"></i></div>
+            </div>
+        </div>
+    
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>{{ kpi_visas }}</h3>
+                    <p>Pending Visas</p>
+                </div>
+                <div class="icon"><i class="fas fa-passport"></i></div>
+            </div>
+        </div>
+    
+    </div>
+    <!-- <div class="row">
+
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3 id="kpi-candidates">--</h3>
+                    <p>Total Candidates</p>
+                </div>
+                <div class="icon"><i class="fas fa-users"></i></div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3 id="kpi-interviews">--</h3>
+                    <p>Interviews Today</p>
+                </div>
+                <div class="icon"><i class="fas fa-calendar-check"></i></div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h3 id="kpi-erpp">--</h3>
+                    <p>ERPP Enrolled</p>
+                </div>
+                <div class="icon"><i class="fas fa-user-graduate"></i></div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-primary">
+                <div class="inner">
+                    <h3 id="kpi-contracts">--</h3>
+                    <p>Active Contracts</p>
+                </div>
+                <div class="icon"><i class="fas fa-file-contract"></i></div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3 id="kpi-visas">--</h3>
+                    <p>Pending Visas</p>
+                </div>
+                <div class="icon"><i class="fas fa-passport"></i></div>
+            </div>
+        </div>
+
+    </div> -->
+
+    <!-- CHARTS -->
+    <div class="row">
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Candidates Overview</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartCandidates"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Interviews Overview</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="chartInterviews"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+<!--  hx-get="{% url 'api:recent_candidates' %}"-->
+    <!-- TABLES -->
+    <div class="row">
+
+        <!-- Recent Candidates -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Recent Candidates</h3>
+                </div>
+                <div class="card-body"
+                     id="recent-candidates"
+                    
+                     hx-get="/dashboard/recent-candidates/"
+                     hx-trigger="load"
+                     hx-swap="innerHTML">
+                    <p>Loading...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Interviews -->
+          <!-- hx-get="/api/dashboard/upcoming-interviews" -->
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Upcoming Interviews</h3>
+                </div>
+                <div class="card-body"
+                     id="upcoming-interviews"
+                     
+                     hx-get="/dashboard/upcoming-interviews/"
+                     hx-trigger="load"
+                     hx-swap="innerHTML">
+                    <p>Loading...</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Quick Actions</h3>
+        </div>
+        <div class="card-body">
+            <a href="/admin/api/candidate/add/" class="btn btn-primary">Add Candidate</a>
+            <a href="/admin/api/interview/add/" class="btn btn-success">Schedule Interview</a>
+            <!-- <a href="/admin/api/candidatedocument/add/" class="btn btn-warning">Upload Document</a> -->
+            <a href="/admin/api/erppenrollment/add/" class="btn btn-info">Add ERPP</a>
+        </div>
+    </div>
+
+    <!-- ACTIVITY FEED -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Recent Activity</h3>
+        </div>
+        <div class="card-body"
+             id="activity-list"
+             hx-get="{% url 'api:activity_feed' %}"
+             hx-trigger="load"
+             hx-swap="innerHTML">
+            <p>Loading...</p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extrahead %}
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- HTMX -->
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Example Charts (replace with API data)
+    const ctx1 = document.getElementById('chartCandidates');
+    new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: ['Mon','Tue','Wed','Thu','Fri'],
+            datasets: [{
+                label: 'Candidates',
+                data: [5, 10, 8, 15, 20],
+                borderWidth: 2
+            }]
+        }
+    });
+
+    const ctx2 = document.getElementById('chartInterviews');
+    new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: ['Mon','Tue','Wed','Thu','Fri'],
+            datasets: [{
+                label: 'Interviews',
+                data: [2, 4, 3, 6, 9],
+                borderWidth: 2
+            }]
+        }
+    });
+
+});
+
+
+</script>
+
+{% endblock %}
+
