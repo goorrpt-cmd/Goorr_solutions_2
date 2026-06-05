@@ -1,6 +1,6 @@
 from django.utils.html import format_html
 from django.contrib import admin
-from .models import Candidate, CandidateDocument, Interview, InterviewAssessment
+from .models import Candidate, CandidateDocument, Interview, InterviewAssessment, Role,UserProfile
 from django.contrib import admin
 from .models import (
     ERPPBatch,
@@ -19,10 +19,25 @@ from .models import (
     TravelAndSettlement,
 )
 
+from django.contrib import admin
+from .models import (
+    Candidate,
+    ImmigrationProcess,
+    VisaApplication,
+    TravelAndSettlement,
+)
 
 # -------------------------
 # Inlines
 # -------------------------
+@admin.register(Role)
+class RoleAdmin(admin.ModelAdmin):
+    list_display=("name",)
+@admin.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display=("user","role","created_at")
+    list_filter=("user",)
+    search_fields=("user__username","user__email")
 
 class CandidateDocumentInline(admin.TabularInline):
     model = CandidateDocument
@@ -59,6 +74,33 @@ class InterviewAssessmentInline(admin.StackedInline):
         "physically_fit",
     )
 
+class ContractInline(admin.TabularInline):
+    model=Contract
+    extra=1
+    can_delete=False
+    max_num=1
+    fields=("candidate", "employer", "contract_file", "issued_date","signed_date")
+
+@admin.register(Contract)
+class ContractAdmin(admin.ModelAdmin):
+    list_display = ("candidate", "employer", "contract_file", "issued_date","signed_date")
+
+
+
+class ImmigrationProcessInline(admin.TabularInline):
+    model = ImmigrationProcess
+    extra = 1
+
+
+class VisaApplicationInline(admin.TabularInline):
+    model = VisaApplication
+    extra = 1
+
+
+class TravelAndSettlementInline(admin.StackedInline):
+    model = TravelAndSettlement
+    extra = 0
+    max_num = 1  # because OneToOneField
 
 
 # -------------------------
@@ -72,9 +114,12 @@ class InterviewAdmin(admin.ModelAdmin):
     search_fields = ("candidate__first_name", "candidate__last_name", "candidate__candidate_id")
     inlines = [InterviewAssessmentInline]
 
+from django.urls import reverse
+from django.utils.html import format_html
 
 @admin.register(Candidate)
 class CandidateAdmin(admin.ModelAdmin):
+
     list_display = (
         "candidate_id",
         "first_name",
@@ -83,7 +128,26 @@ class CandidateAdmin(admin.ModelAdmin):
         "phone",
         "district",
         "status",
+        "report_link",
+        "report_pdf_button",
     )
+
+    def report_link(self, obj):
+        url = reverse("api:candidate_report", args=[obj.id])
+        return format_html(
+            '<a class="button" href="{}" target="_blank">View Report</a>',
+            url
+        )
+
+    report_link.short_description = "Report"
+    
+    def report_pdf_button(self, obj):
+        url = reverse("api:candidate_report_pdf", args=[obj.id])
+        return format_html(
+            '<a class="button" href="{}" target="_blank">Download PDF</a>',
+            url
+        )
+    report_pdf_button.short_description = "Download Report"
 
     search_fields = ("candidate_id", "first_name", "last_name", "email", "phone")
     list_filter = ("status", "gender", "district", "trades_courses", "english_level", "portuguese_level")
@@ -112,7 +176,9 @@ class CandidateAdmin(admin.ModelAdmin):
     )
 
     # ✅ Both inlines here
-    inlines = [CandidateDocumentInline, InterviewInline]
+    inlines = [CandidateDocumentInline, InterviewInline, ContractInline,ImmigrationProcessInline,
+        VisaApplicationInline,
+        TravelAndSettlementInline,]
     
    
 
@@ -159,7 +225,7 @@ class InvoiceAdmin(admin.ModelAdmin):
 
     readonly_fields = ("invoice_number", "issue_date")
 
-    inlines = [ERPPPaymentInline]
+    # inlines = [ERPPPaymentInline]
 
 @admin.register(ERPPPayment)
 class ERPPPaymentAdmin(admin.ModelAdmin):
@@ -173,7 +239,7 @@ class ERPPEnrollmentAdmin(admin.ModelAdmin):
     list_filter = ("status", "batch")
     search_fields = ("candidate__first_name", "candidate__last_name")
 
-    inlines = [ERPPProgressInline]
+    # inlines = [ERPPProgressInline]
 
 @admin.register(ERPPProgress)
 class ERPPProgressAdmin(admin.ModelAdmin):
@@ -192,4 +258,33 @@ class AgencyInline(admin.TabularInline):
 class AgencyAdmin(admin.ModelAdmin):
     list_display = ("name", "manager", "contact_email", "contact_phone")
     list_filter = ("name", "manager")
+   
 
+# -----------------------------
+# INLINE DEFINITIONS
+# -----------------------------
+
+# -----------------------------
+# CANDIDATE ADMIN
+# -----------------------------
+
+# @admin.register(Candidate)
+# class CandidateAdmin(admin.ModelAdmin):
+#     list_display = ("candidate_id", "first_name", "last_name", "status", "created_at")
+#     search_fields = ("candidate_id", "first_name", "last_name", "email")
+#     list_filter = ("status", "district", "gender")
+
+#     inlines = [
+#         ImmigrationProcessInline,
+#         VisaApplicationInline,
+#         TravelAndSettlementInline,
+#     ]
+
+
+from .custom_admin import CustomAdminSite
+from .models import Candidate, Interview
+
+admin_site = CustomAdminSite(name="custom_admin")
+
+admin_site.register(Candidate)
+admin_site.register(Interview)

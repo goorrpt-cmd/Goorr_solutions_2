@@ -49,11 +49,14 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'backend.urls'
+#ROOT_URLCONF = "Goorr_solutions_2.urls"
+
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        # 'DIRS': [BASE_DIR / 'templates'],
+        "DIRS": [BASE_DIR / "templates"],  
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -95,10 +98,20 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/lalo/Goorr_solutions_1/static/'
-
+STATIC_ROOT = '/home/lalo/Goorr_solutions_2/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#New test
+
+LOGIN_URL = "/login/"
+# LOGIN_REDIRECT_URL = "/dashboard/"
+LOGIN_REDIRECT_URL = "/admin/"
+
+LOGOUT_REDIRECT_URL = "/login/"
 
 
 LOGGING = {
@@ -149,66 +162,90 @@ LOGGING = {
     },
 }
 
-
-
-
 JAZZMIN_SETTINGS = {
+    "index_template": "admin/custom_index.html",
     "site_title": "Goorr Admin",
     "site_header": "Goorr Recruitment System",
     "site_brand": "Goorr",
-
-    "welcome_sign": "Welcome to Goorr Recruitment Dashboard",
-    "copyright": "Goorr Ltd",
-
-    # ✅ Top menu
-    #"topmenu_links": [
-     #   {"name": "Dashboard", "url": "admin:index"},
-    #],
-    "topmenu_links": [
-        {"name": "Dashboard", "url": "/admin/"},
-        {"model": "api.Candidate"},
-        {"model": "api.Interview"},
-    ],
-
-
-    # ✅ Sidebar behavior
+    "welcome_sign": "Welcome to Goorr Admin",
+    
+    "custom_css": "css/custom.css",
+    "custom_js": "js/dashboard.js",
     "show_sidebar": True,
-    "navigation_expanded": True,
-
-    # ✅ Order apps & models (VERY useful)
-    "order_with_respect_to": [
-        "api.Candidate",
-        "api.Interview",
-        "api.CandidateDocument",
-    ],
-
-    # ✅ Icons (FontAwesome)
-    "icons": {
-        "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
-
-        "api.Candidate": "fas fa-user-graduate",
-        "api.Interview": "fas fa-comments",
-        "api.CandidateDocument": "fas fa-file-alt",
-    },
-
-    # ✅ UI Tweaks
-    "theme": "flatly",  # try: flatly, cosmo, minty, lumen
-    "dark_mode_theme": "darkly",
-
-    # ✅ Show change form as tabs (clean UI)
-    "changeform_format": "horizontal_tabs",
-
-    # ✅ Custom branding
-    "site_logo": None,  # can add later
-    "login_logo": None,
-
-    # 👇 Add topmenu links here
+    "navigation_expanded": False,
+    "hide_apps": ["auth"],
+    "order_with_respect_to": ["api"],
     "topmenu_links": [
-        {"name": "Goorr Home", "url": "/", "new_window": True},  # external link
-        {"model": "api.Candidate"},  # link to model
-        {"app": "api"},              # link to app
+        {"name": "Dashboard", "url": "admin:index"},
+        {"app": "api"},
     ],
 }
+
+
+
+# JAZZMIN_SETTINGS = {
+
+#     "custom_css": "css/custom.css",
+#     "custom_js": "js/dashboard.js",
+#     "index_template": "admin/custom_index.html",
+#     "site_title": "Goorr Admin",
+#     "site_header": "Goorr Recruitment System",
+#     "site_brand": "Goorr",
+
+#     "welcome_sign": "Welcome to Goorr Recruitment Dashboard",
+#     "copyright": "Goorr Ltd",
+#     "login_url": "/login/",
+#     # Optional: where to go after login
+#     "site_url": "/dashboard/",
+#     # ✅ Top menu
+#     #"topmenu_links": [
+#      #   {"name": "Dashboard", "url": "admin:index"},
+#     #],
+#     "topmenu_links": [
+#         {"name": "Dashboard", "url": "/admin/"},
+#         {"model": "api.Candidate"},
+#         {"model": "api.Interview"},
+#     ],
+
+
+#     # ✅ Sidebar behavior
+#     "show_sidebar": True,
+#     "navigation_expanded": True,
+
+#     # ✅ Order apps & models (VERY useful)
+#     "order_with_respect_to": [
+#         "api.Candidate",
+#         "api.Interview",
+#         "api.CandidateDocument",
+#     ],
+
+#     # ✅ Icons (FontAwesome)
+#     "icons": {
+#         "auth": "fas fa-users-cog",
+#         "auth.user": "fas fa-user",
+
+#         "api.Candidate": "fas fa-user-graduate",
+#         "api.Interview": "fas fa-comments",
+#         "api.CandidateDocument": "fas fa-file-alt",
+#     },
+
+#     # ✅ UI Tweaks
+#     "theme": "flatly",  # try: flatly, cosmo, minty, lumen
+#     "dark_mode_theme": "darkly",
+
+#     # ✅ Show change form as tabs (clean UI)
+#     "changeform_format": "horizontal_tabs",
+
+#     # ✅ Custom branding
+#     "site_logo": None,  # can add later
+#     "login_logo": None,
+
+#     # 👇 Add topmenu links here
+#     "topmenu_links": [
+#         {"name": "Goorr Home", "url": "/", "new_window": True},  # external link
+#         {"model": "api.Candidate"},  # link to model
+#         {"app": "api"},              # link to app
+#     ],
+# }
 
 
