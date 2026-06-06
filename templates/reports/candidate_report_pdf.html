@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Candidate Report - {{ candidate.last_name }}</title>
+
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 13px; }
+        h1 { color: #1e88e5; }
+        h2 { margin-top: 25px; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        td { padding: 4px 0; }
+    </style>
+</head>
+
+<body>
+
+<h1>Candidate Report</h1>
+<tr><td class="font-semibold">Firtst Name:</td><td>{{ candidate.first_name }}</td></tr>
+<tr><td class="font-semibold">Last Name:</td><td>{{ candidate.last_name }}</td></tr>
+<p><strong>Candidate ID:</strong> {{ candidate.candidate_id }}</p>
+<p><strong>Email:</strong> {{ candidate.email }}</p>
+<p><strong>Phone:</strong> {{ candidate.phone }}</p>
+
+<h2>Documents</h2>
+{% for doc in documents %}
+    <p>{{ doc.document_type }} — {{ doc.file.name }}</p>
+{% empty %}
+    <p>No documents.</p>
+{% endfor %}
+
+<h2>Interviews</h2>
+{% for interview in interviews %}
+    <p>{{ interview.scheduled_at }} — {{ interview.result }}</p>
+{% empty %}
+    <p>No interviews.</p>
+{% endfor %}
+
+<h2>ERPP Training</h2>
+{% for e in erpp %}
+    <p>{{ e.batch.name }} ({{ e.batch.start_date }} → {{ e.batch.end_date }})</p>
+{% empty %}
+    <p>No ERPP enrollment.</p>
+{% endfor %}
+
+<h2>Contracts</h2>
+{% for c in contracts %}
+    <p>{{ c.employer.name }} — {{ c.status }}</p>
+{% empty %}
+    <p>No contracts.</p>
+{% endfor %}
+
+<h2>Visa Applications</h2>
+{% for v in visa_apps %}
+    <p>{{ v.visa_type }} — {{ v.status }}</p>
+{% empty %}
+    <p>No visa applications.</p>
+{% endfor %}
+
+<h2>Work Permits</h2>
+{% for wp in work_permits %}
+    <p>{{ wp.employer.name }} — {{ wp.status }}</p>
+{% empty %}
+    <p>No work permits.</p>
+{% endfor %}
+
+</body>
+</html>

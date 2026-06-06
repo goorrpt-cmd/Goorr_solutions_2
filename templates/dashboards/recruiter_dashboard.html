@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="text-3xl font-bold mb-6">Recruiter Dashboard</h1>
+
+<h2 class="text-xl font-semibold mb-3">New Candidates</h2>
+{% include "partials/recent_candidates.html" with candidates=new_candidates %}
+
+<h2 class="text-xl font-semibold mt-8 mb-3">Upcoming Interviews</h2>
+{% include "partials/upcoming_interviews.html" with interviews=upcoming_interviews %}
+
+<h2 class="text-xl font-semibold mt-8 mb-3">Pending Candidates</h2>
+{% include "partials/recent_candidates.html" with candidates=pending_candidates %}
+{% endblock %}
