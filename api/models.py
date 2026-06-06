@@ -131,6 +131,20 @@ class Candidate(TimeStampedModel):
         choices=Status.choices,
         default=Status.REGISTERED,
     )
+
+
+    # ✅ AUTO‑CALCULATED AGE PROPERTY
+    @property
+    def age(self):
+        if not self.date_of_birth:
+            return None
+
+        today = date.today()
+        return (
+            today.year
+            - self.date_of_birth.year
+            - ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
+        )
     def save(self, *args, **kwargs):
         if not self.candidate_id:
             now = timezone.now()

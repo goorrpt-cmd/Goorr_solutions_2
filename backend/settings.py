@@ -22,6 +22,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["goorr.org", "www.goorr.org"]
 
+# ALLOWED_HOSTS = [
+#     "127.0.0.1",
+#     "localhost",
+# ]
 
 # Application definition
 INSTALLED_APPS = [
@@ -130,17 +134,20 @@ LOGGING = {
         },
     },
 
+
+
+
     'handlers': {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': '//home/lalo/Goorr_solutions_2/logs/django.log',
+            'filename': '/home/mcruz/Goorr_solutions_2/logs/django.log',
             'formatter': 'verbose',
         },
         'error_file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': '/home/lalo/Goorr_solutions_2/logs/django_errors.log',
+            'filename': '/home/mcruz/Goorr_solutions_2/logs/django_errors.log',
             'formatter': 'verbose',
         },
         'console': {
