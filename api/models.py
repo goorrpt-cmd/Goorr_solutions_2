@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from django.urls import reverse
 import uuid
 from django.db import models
-
+from datetime import date
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True,null=True, blank=True)
