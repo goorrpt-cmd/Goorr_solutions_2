@@ -48,7 +48,10 @@ class Candidate(TimeStampedModel):
 
             # Terminal
             WITHDRAWN = "WITHDRAWN"
-
+    class MaritalStatus(models.TextChoices):
+        SINGLE = "SINGLE", "Single"
+        MARRIED = "MARRIED", "Married"
+        WIDOW = "WIDOW", "Widow"
     
 
     class GenderChoices(models.TextChoices):
@@ -115,6 +118,12 @@ class Candidate(TimeStampedModel):
     verbose_name="Mother's full name"
 )
     total_siblings = models.PositiveIntegerField(default=0)
+     # Parent marital status
+    parent_marital_status = models.CharField(
+        max_length=20,
+        choices=MaritalStatus.choices,
+        default=MaritalStatus.MARRIED
+    )
 
 
     status = models.CharField(
