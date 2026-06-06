@@ -153,7 +153,7 @@ class CandidateAdmin(admin.ModelAdmin):
     search_fields = ("candidate_id", "first_name", "last_name", "email", "phone")
     list_filter = ("status", "gender", "district", "trades_courses", "english_level", "portuguese_level")
 
-    readonly_fields = ("candidate_id", "age",)
+    readonly_fields = ("candidate_id",)
 
     fieldsets = (
         ("Basic Info", {
