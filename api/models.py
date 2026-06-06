@@ -100,6 +100,10 @@ class Candidate(TimeStampedModel):
     # Language levels
     english_level = models.CharField(max_length=50, choices=Languageschoices, blank=True)
     portuguese_level = models.CharField(max_length=50, choices=Languageschoices, blank=True)
+    
+    # NEW FIELDS
+    father_full_name = models.CharField(max_length=100, null=True, blank=True)
+    mother_full_name = models.CharField(max_length=100, null=True, blank=True)
 
     status = models.CharField(
         max_length=30,
