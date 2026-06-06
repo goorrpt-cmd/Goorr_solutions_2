@@ -153,17 +153,20 @@ class CandidateAdmin(admin.ModelAdmin):
     list_filter = ("status", "gender", "district", "trades_courses", "english_level", "portuguese_level")
 
     readonly_fields = ("candidate_id",)
-
-    fieldsets = (
-        ("Basic Info", {
-            "fields": (
-                "candidate_id",
-                ("first_name", "last_name"),
-                ("date_of_birth", "gender", "height"),
-                ("email", "phone"),
-                ("district", "address"),
-            )
-        }),
+   fieldsets = (
+    ("Basic Info", {
+        "fields": (
+            "candidate_id",
+            ("first_name", "last_name"),
+            ("date_of_birth","age", "gender", "height"),
+            ("candidate_marital_status"),
+            ("email", "phone"),
+            ("district", "address"),
+            ("father_full_name", "mother_full_name"),
+            "total_siblings",
+            "parent_marital_status",
+        )
+    }),
         ("Skills & Courses", {
             "fields": (
                 "trades_courses",

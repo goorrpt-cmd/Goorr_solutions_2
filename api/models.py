@@ -101,9 +101,21 @@ class Candidate(TimeStampedModel):
     english_level = models.CharField(max_length=50, choices=Languageschoices, blank=True)
     portuguese_level = models.CharField(max_length=50, choices=Languageschoices, blank=True)
     
-    # NEW FIELDS
-    father_full_name = models.CharField(max_length=100, null=True, blank=True)
-    mother_full_name = models.CharField(max_length=100, null=True, blank=True)
+      # NEW FIELDS
+    father_full_name = models.CharField(
+    max_length=100,
+    null=True,
+    blank=True,
+    verbose_name="Father's full name"
+)
+    mother_full_name = models.CharField(
+    max_length=100,
+    null=True,
+    blank=True,
+    verbose_name="Mother's full name"
+)
+    total_siblings = models.PositiveIntegerField(default=0)
+
 
     status = models.CharField(
         max_length=30,
