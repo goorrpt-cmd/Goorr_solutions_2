@@ -30,3 +30,8 @@ Thumbs.db
 # Migrations (optional - depends on team)
 # */migrations/*.py
 # !*/migrations/__init__.py
+
+goorvenv1/
+venv/
+*.pyc
+__pycache__/
