@@ -141,13 +141,13 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': '/home/mcruz/Goorr_solutions_2/logs/django.log',
+            'filename': '/home/lalo/Goorr_solutions_2/logs/django.log',
             'formatter': 'verbose',
         },
         'error_file': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': '/home/mcruz/Goorr_solutions_2/logs/django_errors.log',
+            'filename': '/home/lalo/Goorr_solutions_2/logs/django_errors.log',
             'formatter': 'verbose',
         },
         'console': {
