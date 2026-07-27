@@ -1,6 +1,6 @@
 from django.utils.html import format_html
 from django.contrib import admin
-from .models import Candidate, CandidateDocument, Interview, InterviewAssessment, Role,UserProfile
+from .models import Candidate, CandidateDocument, Interview, InterviewAssessment, Role,UserProfile,DocumentTypeConfig
 from django.contrib import admin
 from .models import (
     ERPPBatch,
@@ -186,69 +186,69 @@ class CandidateAdmin(admin.ModelAdmin):
     
    
 
-class InvoiceInline(admin.TabularInline):
-    model = Invoice
-    extra = 1
-    fields = ("invoice_number", "candidate", "amount", "due_date", "status")
-    readonly_fields = ("invoice_number", "issue_date")
-    show_change_link = True
-class ERPPPaymentInline(admin.TabularInline):
-    model = ERPPPayment
-    extra = 1
-    fields = ("candidate", "amount", "reference_number", "payment_date", "status")
-    show_change_link = True
+# class InvoiceInline(admin.TabularInline):
+#     model = Invoice
+#     extra = 1
+#     fields = ("invoice_number", "candidate", "amount", "due_date", "status")
+#     readonly_fields = ("invoice_number", "issue_date")
+#     show_change_link = True
+# class ERPPPaymentInline(admin.TabularInline):
+#     model = ERPPPayment
+#     extra = 1
+#     fields = ("candidate", "amount", "reference_number", "payment_date", "status")
+#     show_change_link = True
 
-class ERPPEnrollmentInline(admin.TabularInline):
-    model = ERPPEnrollment
-    extra = 1
-    fields = ("candidate", "payment", "status", "graduation_date")
-    show_change_link = True
+# class ERPPEnrollmentInline(admin.TabularInline):
+#     model = ERPPEnrollment
+#     extra = 1
+#     fields = ("candidate", "payment", "status", "graduation_date")
+#     show_change_link = True
 
-class ERPPProgressInline(admin.TabularInline):
-    model = ERPPProgress
-    extra = 1
-    fields = ("module_name", "completed", "performance_score", "attendance", "notes")
+# class ERPPProgressInline(admin.TabularInline):
+#     model = ERPPProgress
+#     extra = 1
+#     fields = ("module_name", "completed", "performance_score", "attendance", "notes")
 
-@admin.register(ERPPBatch)
-class ERPPBatchAdmin(admin.ModelAdmin):
-    list_display = ("name", "start_date", "end_date", "max_participants")
-    search_fields = ("name",)
-    list_filter = ("start_date", "end_date")
+# @admin.register(ERPPBatch)
+# class ERPPBatchAdmin(admin.ModelAdmin):
+#     list_display = ("name", "start_date", "end_date", "max_participants")
+#     search_fields = ("name",)
+#     list_filter = ("start_date", "end_date")
 
-    inlines = [
-        InvoiceInline,
-        ERPPPaymentInline,
-        ERPPEnrollmentInline,
-    ]
+#     inlines = [
+#         InvoiceInline,
+#         ERPPPaymentInline,
+#         ERPPEnrollmentInline,
+#     ]
 
-@admin.register(Invoice)
-class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ("invoice_number", "candidate", "batch", "amount", "due_date", "status")
-    search_fields = ("invoice_number", "candidate__first_name", "candidate__last_name")
-    list_filter = ("status", "batch")
+# @admin.register(Invoice)
+# class InvoiceAdmin(admin.ModelAdmin):
+#     list_display = ("invoice_number", "candidate", "batch", "amount", "due_date", "status")
+#     search_fields = ("invoice_number", "candidate__first_name", "candidate__last_name")
+#     list_filter = ("status", "batch")
 
-    readonly_fields = ("invoice_number", "issue_date")
+#     readonly_fields = ("invoice_number", "issue_date")
 
-    # inlines = [ERPPPaymentInline]
+#     # inlines = [ERPPPaymentInline]
 
-@admin.register(ERPPPayment)
-class ERPPPaymentAdmin(admin.ModelAdmin):
-    list_display = ("reference_number", "candidate", "batch", "amount", "payment_date", "status")
-    search_fields = ("reference_number", "candidate__first_name", "candidate__last_name")
-    list_filter = ("status", "batch")
+# @admin.register(ERPPPayment)
+# class ERPPPaymentAdmin(admin.ModelAdmin):
+#     list_display = ("reference_number", "candidate", "batch", "amount", "payment_date", "status")
+#     search_fields = ("reference_number", "candidate__first_name", "candidate__last_name")
+#     list_filter = ("status", "batch")
 
-@admin.register(ERPPEnrollment)
-class ERPPEnrollmentAdmin(admin.ModelAdmin):
-    list_display = ("candidate", "batch", "status", "graduation_date")
-    list_filter = ("status", "batch")
-    search_fields = ("candidate__first_name", "candidate__last_name")
+# @admin.register(ERPPEnrollment)
+# class ERPPEnrollmentAdmin(admin.ModelAdmin):
+#     list_display = ("candidate", "batch", "status", "graduation_date")
+#     list_filter = ("status", "batch")
+#     search_fields = ("candidate__first_name", "candidate__last_name")
 
-    # inlines = [ERPPProgressInline]
+#     # inlines = [ERPPProgressInline]
 
-@admin.register(ERPPProgress)
-class ERPPProgressAdmin(admin.ModelAdmin):
-    list_display = ("enrollment", "module_name", "completed", "performance_score", "attendance")
-    list_filter = ("completed", "attendance")
+# @admin.register(ERPPProgress)
+# class ERPPProgressAdmin(admin.ModelAdmin):
+#     list_display = ("enrollment", "module_name", "completed", "performance_score", "attendance")
+#     list_filter = ("completed", "attendance")
 
 
 
@@ -264,6 +264,23 @@ class AgencyAdmin(admin.ModelAdmin):
     list_filter = ("name", "manager")
    
 
+
+# @admin.register(DocumentTypeConfig)
+# class DocumentTypeConfigAdmin(admin.ModelAdmin):
+#     list_display = (
+#         "doc_type",
+#         "require_number",
+#         "require_issue_date",
+#         "require_expiry_date",
+#         "require_file",
+#     )
+
+#     list_editable = (
+#         "require_number",
+#         "require_issue_date",
+#         "require_expiry_date",
+#         "require_file",
+#     )
 # -----------------------------
 # INLINE DEFINITIONS
 # -----------------------------

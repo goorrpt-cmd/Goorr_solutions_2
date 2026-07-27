@@ -7,6 +7,9 @@ from django.urls import reverse
 import uuid
 from django.db import models
 from datetime import date
+
+from django.core.exceptions import ValidationError
+
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True,null=True, blank=True)
@@ -121,6 +124,8 @@ class Candidate(TimeStampedModel):
      # Parent marital status
     parent_marital_status = models.CharField(
         max_length=20,
+        null=True,
+        blank=True,
         choices=MaritalStatus.choices,
         default=MaritalStatus.MARRIED
     )
@@ -131,7 +136,7 @@ class Candidate(TimeStampedModel):
         choices=Status.choices,
         default=Status.REGISTERED,
     )
-
+     
 
     # ✅ AUTO‑CALCULATED AGE PROPERTY
     @property
@@ -167,7 +172,6 @@ class Candidate(TimeStampedModel):
         verbose_name = "Candidate"
         verbose_name_plural = "Candidates"
 
-
 class CandidateDocument(TimeStampedModel):
     class DocType(models.TextChoices):
         PASSPORT = "PASSPORT", "Passport"
@@ -190,6 +194,30 @@ class CandidateDocument(TimeStampedModel):
     issue_date = models.DateField(null=True, blank=True)
     expiry_date = models.DateField(null=True, blank=True)
     file = models.FileField(upload_to="candidate_documents/", blank=True, null=True)
+
+class DocumentTypeConfig(models.Model):
+    doc_type = models.CharField(
+        max_length=50,
+        choices=CandidateDocument.DocType.choices,
+        unique=True,
+    )
+
+    require_number = models.BooleanField(default=True)
+    require_issue_date = models.BooleanField(default=False)
+    require_expiry_date = models.BooleanField(default=False)
+    require_file = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Document Type Configuration"
+        verbose_name_plural = "Document Type Configurations"
+
+    def __str__(self):
+        return self.get_doc_type_display()
+
+
+
+
+
 
 class Interview(TimeStampedModel):
 
