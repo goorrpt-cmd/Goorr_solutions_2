@@ -14,7 +14,8 @@ from .models import (
     JobPosition,
     Contract,
     WorkPermit,
-    ImmigrationProcess,
+    FinancialInformation,
+    #ImmigrationProcess,
     VisaApplication,
     TravelAndSettlement,
 )
@@ -22,7 +23,7 @@ from .models import (
 from django.contrib import admin
 from .models import (
     Candidate,
-    ImmigrationProcess,
+    #ImmigrationProcess,
     VisaApplication,
     TravelAndSettlement,
 )
@@ -39,11 +40,47 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_filter=("user",)
     search_fields=("user__username","user__email")
 
+
+
+from django import forms
+from django.contrib import admin
+from .models import CandidateDocument, DocumentTypeConfig
+
+
+class CandidateDocumentInlineForm(forms.ModelForm):
+    class Meta:
+        model = CandidateDocument
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        doc_type = None
+
+        # When editing an existing inline row
+        if self.instance and self.instance.pk:
+            doc_type = self.instance.doc_type
+
+        # When adding a new inline row (doc_type chosen in form)
+        if "doc_type" in self.data:
+            doc_type = self.data.get("doc_type")
+
+        # Hide expiry_date for NIF and NISS
+        if doc_type in ["NIF", "NISS"]:
+            self.fields["expiry_date"].widget = forms.HiddenInput()
+            self.fields["expiry_date"].required = False
+
+
 class CandidateDocumentInline(admin.TabularInline):
     model = CandidateDocument
-    extra = 1
-    fields = ("doc_type", "number", "issue_date", "expiry_date", "file")
-    show_change_link = True
+    form = CandidateDocumentInlineForm
+    extra = 0
+
+
+@admin.register(DocumentTypeConfig)
+class DocumentTypeConfigAdmin(admin.ModelAdmin):
+    list_display = ["doc_type", "require_number", "require_issue_date",
+                    "require_expiry_date", "require_file"]
 
 
 class InterviewInline(admin.TabularInline):
@@ -87,20 +124,20 @@ class ContractAdmin(admin.ModelAdmin):
 
 
 
-class ImmigrationProcessInline(admin.TabularInline):
-    model = ImmigrationProcess
+class FinancialInformationInline(admin.TabularInline):
+    model = FinancialInformation
     extra = 1
 
 
-class VisaApplicationInline(admin.TabularInline):
-    model = VisaApplication
-    extra = 1
+# class VisaApplicationInline(admin.TabularInline):
+#     model = VisaApplication
+#     extra = 1
 
 
-class TravelAndSettlementInline(admin.StackedInline):
-    model = TravelAndSettlement
-    extra = 0
-    max_num = 1  # because OneToOneField
+# class TravelAndSettlementInline(admin.StackedInline):
+#     model = TravelAndSettlement
+#     extra = 0
+#     max_num = 1  # because OneToOneField
 
 
 # -------------------------
@@ -128,6 +165,7 @@ class CandidateAdmin(admin.ModelAdmin):
         "email",
         "phone",
         "district",
+       
         "status",
         "report_link",
         "report_pdf_button",
@@ -151,7 +189,7 @@ class CandidateAdmin(admin.ModelAdmin):
     report_pdf_button.short_description = "Download Report"
 
     search_fields = ("candidate_id", "first_name", "last_name", "email", "phone")
-    list_filter = ("status", "gender", "district", "trades_courses", "english_level", "portuguese_level")
+    list_filter = ("status", "gender", "district", "Occupation", "english_level", "portuguese_level")
 
     readonly_fields = ("candidate_id",)
 
@@ -161,18 +199,21 @@ class CandidateAdmin(admin.ModelAdmin):
                 "candidate_id",
                 ("first_name", "last_name"),
                 ("date_of_birth", "gender", "height"),
+                
                 ("email", "phone"),
                 ("district", "address"),
                 ("father_full_name", "mother_full_name"),
             "total_siblings",
             "parent_marital_status",
+             "PrimaryHealthConcern",
+             "arrival_date",
             )
         }),
         ("Skills & Courses", {
             "fields": (
-                "trades_courses",
-                "lifeskilss_course",
-                "health",
+                "Occupation",
+                #"lifeskilss_course",
+               
                 ("english_level", "portuguese_level"),
             )
         }),
@@ -180,9 +221,7 @@ class CandidateAdmin(admin.ModelAdmin):
     )
 
     # ✅ Both inlines here
-    inlines = [CandidateDocumentInline, InterviewInline, ContractInline,ImmigrationProcessInline,
-        VisaApplicationInline,
-        TravelAndSettlementInline,]
+    inlines = [CandidateDocumentInline, InterviewInline, ContractInline,FinancialInformationInline,]
     
    
 

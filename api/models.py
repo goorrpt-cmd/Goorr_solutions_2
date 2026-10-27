@@ -18,39 +18,82 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
+class CandidateStatusChoices(models.TextChoices):
+    # Assessment
+    ERP = "ERP", "ERP"
+    ERP_A2_PT = "ERP_A2_PT", "ERP - A2 (PT)"
+    ERP_A2_ENI = "ERP_A2_ENI", "ERP - A2 (ENI)"
+
+    # Interview
+    INTERVIEW_PASS = "INTERVIEW_PASS", "Interview - Pass"
+    INTERVIEW_FAIL = "INTERVIEW_FAIL", "Interview - Fail"
+    EMPLOYER_SELECTED = "EMPLOYER_SELECTED", "Employer Selected"
+
+    # Documentation
+    CONTRACT_SIGNED = "CONTRACT_SIGNED", "Contract Signed"
+    TDR = "TDR", "TdR"
+    CC = "CC", "CC"
+
+    # Visa & Travel
+    WAITING_VISA = "WAITING_VISA", "Waiting for Visa"
+    VISA_GRANTED = "VISA_GRANTED", "Visa Granted"
+    TICKET_PURCHASED = "TICKET_PURCHASED", "Ticket Purchased"
+
 class Candidate(TimeStampedModel):
-    class Status(models.TextChoices):
-                # Registration Phase
-            REGISTERED = "REGISTERED"
-            INTERVIEW_SCHEDULED = "INTERVIEW_SCHEDULED"
-            INTERVIEW_PASSED = "INTERVIEW_PASSED"
-            INTERVIEW_FAILED = "INTERVIEW_FAILED"
+    # class Status(models.TextChoices):
+    #             # Registration Phase
+    #         REGISTERED = "REGISTERED"
+    #         INTERVIEW_SCHEDULED = "INTERVIEW_SCHEDULED"
+    #         INTERVIEW_PASSED = "INTERVIEW_PASSED"
+    #         INTERVIEW_FAILED = "INTERVIEW_FAILED"
 
-            # Training Phase
-            ERPP_ENROLLED = "ERPP_ENROLLED"
-            ERPP_COMPLETED = "ERPP_COMPLETED"
-            ERPP_DROPPED = "ERPP_DROPPED"
+    #         # Training Phase
+    #         ERPP_ENROLLED = "ERPP_ENROLLED"
+    #         ERPP_COMPLETED = "ERPP_COMPLETED"
+    #         ERPP_DROPPED = "ERPP_DROPPED"
 
-            # Placement Phase
-            POOL_READY = "POOL_READY"
-            MATCHED = "MATCHED"
-            CONTRACT_SIGNED = "CONTRACT_SIGNED"
+    #         # Placement Phase
+    #         POOL_READY = "POOL_READY"
+    #         MATCHED = "MATCHED"
+    #         CONTRACT_SIGNED = "CONTRACT_SIGNED"
 
-            # Government Phase
-            WORK_PERMIT_SUBMITTED = "WORK_PERMIT_SUBMITTED"
-            WORK_PERMIT_APPROVED = "WORK_PERMIT_APPROVED"
-            WORK_PERMIT_REJECTED = "WORK_PERMIT_REJECTED"
+    #         # Government Phase
+    #         WORK_PERMIT_SUBMITTED = "WORK_PERMIT_SUBMITTED"
+    #         WORK_PERMIT_APPROVED = "WORK_PERMIT_APPROVED"
+    #         WORK_PERMIT_REJECTED = "WORK_PERMIT_REJECTED"
 
-            VISA_SUBMITTED = "VISA_SUBMITTED"
-            VISA_APPROVED = "VISA_APPROVED"
-            VISA_REJECTED = "VISA_REJECTED"
+    #         VISA_SUBMITTED = "VISA_SUBMITTED"
+    #         VISA_APPROVED = "VISA_APPROVED"
+    #         VISA_REJECTED = "VISA_REJECTED"
 
-            # Travel & Settlement
-            ARRIVED = "ARRIVED"
-            SETTLED = "SETTLED"
+    #         # Travel & Settlement
+    #         ARRIVED = "ARRIVED"
+    #         SETTLED = "SETTLED"
 
-            # Terminal
-            WITHDRAWN = "WITHDRAWN"
+    #         # Terminal
+    #         WITHDRAWN = "WITHDRAWN"
+
+
+    class CandidateStatusChoices(models.TextChoices):
+        # Assessment
+        ERP = "ERP", "ERP"
+        ERP_A2_PT = "ERP_A2_PT", "ERP - A2 (PT)"
+        ERP_A2_ENI = "ERP_A2_ENI", "ERP - A2 (ENI)"
+
+        # Interview
+        INTERVIEW_PASS = "INTERVIEW_PASS", "Interview - Pass"
+        INTERVIEW_FAIL = "INTERVIEW_FAIL", "Interview - Fail"
+        EMPLOYER_SELECTED = "EMPLOYER_SELECTED", "Employer Selected"
+
+        # Documentation
+        CONTRACT_SIGNED = "CONTRACT_SIGNED", "Contract Signed"
+        TDR = "TDR", "TdR"
+        CC = "CC", "CC"
+
+        # Visa & Travel
+        WAITING_VISA = "WAITING_VISA", "Waiting for Visa"
+        VISA_GRANTED = "VISA_GRANTED", "Visa Granted"
+        TICKET_PURCHASED = "TICKET_PURCHASED", "Ticket Purchased"
     class MaritalStatus(models.TextChoices):
         SINGLE = "SINGLE", "Single"
         MARRIED = "MARRIED", "Married"
@@ -70,21 +113,63 @@ class Candidate(TimeStampedModel):
         LIQUICA = "Liquica"
         LAUTEM="Lautem"
         MANATUTO="Manatuto"
-        SAME= "SAME"
+        SAME= "Same"
         SUAI="Suai"
         OECUSSE="Oecussi"
         VIQUEQUE="Viqueque"
 
-    class TradeChoices(models.TextChoices):
-        Barista="Barista"
-        Carpinter="Carpinter"
-        Electrician="Electrician"
-        Plumber="Plumber"
+    # class TradeChoices(models.TextChoices):
+    #     Barista="Barista"
+    #     Carpinter="Carpinter"
+    #     Electrician="Electrician"
+    #     Plumber="Plumber"
+    # class Languageschoices(models.TextChoices):
+    #     A1="Basic"
+    #     B1="Intermediate"
+    #     C1="Advanced"
+    #     A2="Basic"
+    #     B2="Intermediate"
+    #     C2="Advanced"  
+
     class Languageschoices(models.TextChoices):
-        A1="Basic"
-        B1="Intermediate"
-        C1="Advanced"
-        
+        A1 = "A1", "Beginner (A1)"
+        A2 = "A2", "Elementary (A2)"
+        B1 = "B1", "Intermediate (B1)"
+        B2 = "B2", "Upper Intermediate (B2)"
+        C1 = "C1", "Advanced (C1)"
+        C2 = "C2", "Proficient / Native-like (C2)"
+
+    class PrimaryHealthConcernChoices(models.TextChoices):
+        TB = "TB", "Tuberculosis (TB)"
+        MALARIA = "MALARIA", "Malaria"
+        CHRONIC_COUGH = "CHRONIC_COUGH", "Chronic Cough"
+        FEVER = "FEVER", "Fever"
+        STOMACH = "STOMACH", "Stomach Problem"
+        DENTAL = "DENTAL", "Dental / Denture Problem"
+        PREGNANCY = "PREGNANCY", "Pregnancy"
+        ANAEMIA = "ANAEMIA", "Anaemia"
+        FATIGUE = "FATIGUE", "Fatigue / Weakness"
+    class OccupationChoices(models.TextChoices):
+        BABYSITTER = "BABYSITTER", "Babysitter"
+        CHEF = "CHEF", "Chef / Assistant Chef"
+        CHAINSAW_OPERATOR = "CHAINSAW_OPERATOR", "Chainsaw Operator"
+        CLEANER = "CLEANER", "Cleaner"
+        CONSTRUCTION = "CONSTRUCTION", "Construction"
+        CUSTOMER_SERVICE = "CUSTOMER_SERVICE", "Customer Service"
+        DOMESTIC_EMPLOYEE = "DOMESTIC_EMPLOYEE", "Domestic Employee"
+        FORKLIFT_DRIVER = "FORKLIFT_DRIVER", "Forklift Driver"
+        LIGHT_VEHICLE_DRIVER = "LIGHT_VEHICLE_DRIVER", "Light Vehicle Driver"
+        LOGISTICS = "LOGISTICS", "Logistics"
+        MASONRY = "MASONRY", "Masonry"
+        MEAT_CUTTER = "MEAT_CUTTER", "Meat Cutter"
+        NURSING = "NURSING", "Nursing"
+        PASSENGER_VEHICLE_DRIVER = "PASSENGER_VEHICLE_DRIVER", "Passenger Vehicle Driver"
+        PCA = "PCA", "Personal Care Assistant (PCA)"
+        PLUMBER = "PLUMBER", "Plumber"
+        TRUCK_DRIVER = "TRUCK_DRIVER", "Truck Driver"
+        WAITER_WAITRESS = "WAITER_WAITRESS", "Waiter / Waitress"
+        WELDER = "WELDER", "Welder"
+
            
     candidate_id = models.CharField(max_length=20, unique=True, editable=False, null=True, blank=True)
     first_name = models.CharField(max_length=100)
@@ -96,12 +181,15 @@ class Candidate(TimeStampedModel):
     phone = models.CharField(max_length=50, blank=True)
     district=models.CharField(max_length=30, choices=DistrictChoices, default=DistrictChoices.Aileu)
     address = models.CharField(max_length=150, null=True, blank=True)
-
+    arrival_date=models.DateField(null=True, blank=True)
     # Extra profile fields
-    trades_courses = models.CharField(max_length=50, choices=TradeChoices, default=TradeChoices.Barista)
-    lifeskilss_course=models.CharField(max_length=100, blank=True, null=True)
+    Occupation = models.CharField(max_length=50, choices=OccupationChoices, default=OccupationChoices.BABYSITTER)
+    #lifeskilss_course=models.CharField(max_length=100, blank=True, null=True)
     # health_status = models.CharField(max_length=255, blank=True)
-    health=models.CharField(max_length=100, null=True, blank=True)
+    PrimaryHealthConcern=models.CharField(max_length=100, null=True, blank=True, choices=PrimaryHealthConcernChoices)
+
+
+    
 
     # Language levels
     english_level = models.CharField(max_length=50, choices=Languageschoices, blank=True)
@@ -133,8 +221,8 @@ class Candidate(TimeStampedModel):
 
     status = models.CharField(
         max_length=30,
-        choices=Status.choices,
-        default=Status.REGISTERED,
+        choices=CandidateStatusChoices,
+        default=CandidateStatusChoices.ERP,
     )
      
 
@@ -549,19 +637,73 @@ class WorkPermit(TimeStampedModel):
     notes = models.TextField(blank=True)
 
 
-class ImmigrationProcess(TimeStampedModel):
-    class FundingType(models.TextChoices):
-        SELF_FUNDED = "SELF_FUNDED", "Self-funded"
-        BANK_LOAN = "BANK_LOAN", "Bank-loan funded"
+# class ImmigrationProcess(TimeStampedModel):
+#     class FundingType(models.TextChoices):
+#         SELF_FUNDED = "SELF_FUNDED", "Self-funded"
+#         BANK_LOAN = "BANK_LOAN", "Bank-loan funded"
         
 
-    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name="immigration_processes")
-    visa_application_initiated = models.BooleanField(default=False)
-    funding_type = models.CharField(max_length=20, choices=FundingType.choices, blank=True)
-    lodge_application = models.BooleanField(default=False)
-    passed = models.BooleanField(null=True, blank=True)
-    notes = models.TextField(blank=True)
+#     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name="immigration_processes")
+#     visa_application_initiated = models.BooleanField(default=False)
+#     funding_type = models.CharField(max_length=20, choices=FundingType.choices, blank=True)
+#     lodge_application = models.BooleanField(default=False)
+#     passed = models.BooleanField(null=True, blank=True)
+#     notes = models.TextField(blank=True)
 
+class FundingSource(models.TextChoices):
+    SELF_FUNDED = "SELF", "Self Funded"
+    BANK_LOAN = "BANK", "Bank Loan"
+    RELATIVE_LOAN = "RELATIVE", "Relative Loan"
+    COOPERATIVE_LOAN = "COOP", "Cooperative Loan"
+
+
+class FinancialInformation(models.Model):
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE, related_name="Financial_info")
+    funding_source = models.CharField(
+        max_length=20,
+        choices=FundingSource.choices
+    )
+
+    amount_borrowed = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
+
+    interest_rate = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Annual interest rate (%)",
+    )
+
+    loan_term_months = models.IntegerField(
+        null=True,
+        blank=True,
+    )
+
+    repayment_schedule = models.CharField(
+        max_length=20,
+        choices=[
+            ("WEEKLY", "Weekly"),
+            ("FORTNIGHTLY", "Fortnightly"),
+            ("MONTHLY", "Monthly"),
+            ("QUARTERLY", "Quarterly"),
+        ],
+        blank=True,
+    )
+
+    loan_start_date = models.DateField(
+        null=True,
+        blank=True,
+    )
+
+    estimated_payoff_date = models.DateField(
+        null=True,
+        blank=True,
+    )
 
 class VisaApplication(TimeStampedModel):
     class Status(models.TextChoices):
